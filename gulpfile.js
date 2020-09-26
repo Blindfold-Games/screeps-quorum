@@ -71,8 +71,11 @@ function deploy () {
   }
   options.secure = !!opts.ssl || (options.host === 'screeps.com')
   options.port = opts.port || 443
-
-  return gulp.src('dist/*.js').pipe(screeps(options))
+  
+  if (opts.localpath !== undefined) 
+    return gulp.src('dist/*.js').pipe(gulp.dest(opts.localpath))
+  else
+    return gulp.src('dist/*.js').pipe(screeps(options))
 }
 
 gulp.task('deploy', gulp.series('copy', () => {
