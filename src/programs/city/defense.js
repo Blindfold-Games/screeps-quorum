@@ -34,12 +34,8 @@ class CityDefense extends kernel.process {
 
     this.room = Game.rooms[this.data.room]
     const towers = this.room.structures[STRUCTURE_TOWER]
-
-    const hostiles = this.room.find(FIND_HOSTILE_CREEPS, {
-      filter: function(creep) {
-          return room.isPotentialHazard(creep);
-      }
-    })
+    const room = this.room
+    const hostiles = this.room.find(FIND_HOSTILE_CREEPS);
 
     if (towers && towers.length > 0) {
       this.fireTowers(towers, hostiles)
