@@ -30,8 +30,10 @@ class Spawns extends kernel.process {
       if (!creep) {
         break
       }
-      const ret = spawn.createCreep(creep.build, creep.name, creep.memory)
-      if (Number.isInteger(ret)) {
+      const ret = spawn.spawnCreep(creep.build, creep.name, 
+                                    {memory: creep.memory, 
+                                     directions:[TOP, TOP_RIGHT, TOP_LEFT,RIGHT, BOTTOM_RIGHT,BOTTOM,BOTTOM_LEFT,LEFT]});
+      if (ret != OK) {
         Logger.log(`Error ${ret} while spawning creep ${creep.name} in room ${this.data.room}`, LOG_ERROR)
       } else {
         Logger.log(`Spawning creep ${creep.name} from ${this.data.room}`)
