@@ -5,7 +5,7 @@ let CONTROLLER_MESSAGE
 if (PUBLIC_ACCOUNT) {
   CONTROLLER_MESSAGE = 'Self Managed Code * quorum.tedivm.com * github.com/ScreepsQuorum/screeps-quorum * #quorum in Slack'
 } else {
-  CONTROLLER_MESSAGE = 'Fully Autonomous Open Source Bot * github.com/ScreepsQuorum/screeps-quorum * #quorum in Slack'
+  CONTROLLER_MESSAGE = '💀'
 }
 
 class Spook extends MetaRole {
