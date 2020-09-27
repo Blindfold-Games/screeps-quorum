@@ -43,6 +43,12 @@ class CityConstruct extends kernel.process {
         if (structure.my) {
           continue
         }
+        // ignore indestructible walls (next to novice areas for ex.)
+        if (structure.structureType === STRUCTURE_WALL &&
+              (structure.pos.x > 47 || structure.pos.x < 2 ||
+               structure.pos.y > 47 || structure.pos.y < 2) ) {
+          continue
+        }
         const plannedStructure = layout.getStructureAt(structure.pos.x, structure.pos.y) // If we need a road or a container at this position anyway we just leave it there
         if ((plannedStructure === STRUCTURE_CONTAINER || _.any(miningPositions, p => p.isEqualTo(structure.pos))) && // Is a container planned here?
           (structure.structureType === STRUCTURE_CONTAINER || structure.structureType === STRUCTURE_ROAD)) { // Roads are built under every container, so we keep them
