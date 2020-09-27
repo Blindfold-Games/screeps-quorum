@@ -66,3 +66,4 @@ typings/
 
 # for Visual Studio users
 /.vs
+.vscode/tasks.json
