@@ -1,7 +1,7 @@
 'use strict'
 
 // Send notification when room is claimed
-if (!Creep.prototype.__claimOriginal) {
+if (!Creep.prototype.__claimControllerOriginal) {
   Creep.prototype.__claimControllerOriginal = Creep.prototype.claimController
   Creep.prototype.claimController = function (controller) {
     const ret = this.__claimControllerOriginal(controller)
