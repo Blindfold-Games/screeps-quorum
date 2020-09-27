@@ -45,10 +45,14 @@ Creep.prototype.recharge = function () {
   // Check for qualifying dropped energy.
   const resources = this.room.find(FIND_DROPPED_RESOURCES, {
     filter: function (resource) {
-      if (resource.resourceType !== RESOURCE_ENERGY || resource.amount < carryCap) {
+      if (resource.resourceType !== RESOURCE_ENERGY /*|| resource.amount < carryCap*/) {
         return false
       }
 
+      if (resource.reserved && resource.reserved >= resource.amount) {
+        return false;
+      }
+      return true
       // Is resource on top of container?
       const structures = resource.pos.lookFor(LOOK_STRUCTURES)
       for (const structure of structures) {
@@ -68,12 +72,16 @@ Creep.prototype.recharge = function () {
         return true
       }
 
-      return false
+      return false;
     }
   })
 
   if (resources.length > 0) {
     const resource = this.pos.findClosestByRange(resources)
+    if (!resource.reserved) {
+      resource.reserved = 0;
+    }
+    resource.reserved += carryCap;
     if (!this.pos.isNearTo(resource)) {
       this.travelTo(resource)
     }
@@ -84,9 +92,11 @@ Creep.prototype.recharge = function () {
   }
 
   // If there is no storage check for containers.
-  const containers = _.filter(this.room.structures[STRUCTURE_CONTAINER], (a) => a.store[RESOURCE_ENERGY] > Math.min(a.storeCapacity, carryCap))
+  const containers = _.filter(this.room.structures[STRUCTURE_CONTAINER], 
+    (a) => a.store[RESOURCE_ENERGY] - (a.reserved || 0) >= Math.min(a.storeCapacity, carryCap))
   if (containers.length > 0) {
     const container = this.pos.findClosestByRange(containers)
+    container.reserved = (container.reserved || 0) + carryCap;
     if (!this.pos.isNearTo(container)) {
       this.travelTo(container)
     }
