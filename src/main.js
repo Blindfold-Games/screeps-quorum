@@ -22,11 +22,11 @@ global.sos_lib = require('thirdparty_sos_lib')
 require('thirdparty_roomvisual')
 
 /* Add "creep talk" library - https://github.com/screepers/creeptalk */
-const language = require('thirdparty_creeptalk_emoji')
-require('thirdparty_creeptalk')({
-  public: true,
-  language: language
-})
+//const language = require('thirdparty_creeptalk_emoji')
+//require('thirdparty_creeptalk')({
+//  public: true,
+//  language: language
+//})
 
 /* Make the quorum library code available globally */
 global.qlib = require('lib_loader')
@@ -35,7 +35,8 @@ global.qlib = require('lib_loader')
 require('extends_controller')
 require('extends_creep')
 require('extends_creep_actions')
-require('extends_creep_movement')
+//require('extends_creep_movement')
+require("thirdparty_traveler")
 require('extends_creep_overrides')
 require('extends_lab')
 require('extends_mineral')
