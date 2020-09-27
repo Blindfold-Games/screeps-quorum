@@ -41,8 +41,15 @@ class Filler extends MetaRole {
     }
 
     // Find structure to fill
-    const structure = creep.pos.findClosestByRange(creep.room.getStructuresToFill(this.fillableStructures))
+    const structure = creep.pos.findClosestByRange(creep.room.getStructuresToFill(this.fillableStructures)
+    , {
+      filter: (s) => {
+ //       if (s.planned) {Logger.log('Already planned to fill ' + s.planned + ' to structure ' + s.id)}
+        return (s.planned || 0) < s.store.getCapacity(RESOURCE_ENERGY);}
+    }
+    );
     if (structure) {
+      (!structure.planned || structure.planned < structure.store.getCapacity(RESOURCE_ENERGY))
       creep.memory.ft = structure.id
       this.fillStructure(creep, structure)
       return
@@ -65,14 +72,16 @@ class Filler extends MetaRole {
       const spawns = creep.room.find(FIND_MY_SPAWNS)
       target = spawns[0]
     }
-    if (creep.pos.getRangeTo(target) > 3) {
+    if (creep.pos.getRangeTo(target) > 4) {
       creep.travelTo(target)
     }
   }
 
   fillStructure (creep, structure) {
+    const energyToSupply = Math.min(creep.carry[RESOURCE_ENERGY], structure.energyCapacity - structure.energy);
+    structure.planned = (structure.planned || 0) + energyToSupply
     if (creep.pos.isNearTo(structure)) {
-      creep.transfer(structure, RESOURCE_ENERGY, Math.min(creep.carry[RESOURCE_ENERGY], structure.energyCapacity - structure.energy))
+      creep.transfer(structure, RESOURCE_ENERGY, energyToSupply)
     } else {
       const opts = {}
       if (structure.structureType === STRUCTURE_TOWER) {
