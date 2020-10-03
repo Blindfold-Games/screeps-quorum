@@ -45,14 +45,14 @@ Creep.prototype.recharge = function () {
   // Check for qualifying dropped energy.
   const resources = this.room.find(FIND_DROPPED_RESOURCES, {
     filter: function (resource) {
-      if (resource.resourceType !== RESOURCE_ENERGY /*|| resource.amount < carryCap*/) {
+      if (resource.resourceType !== RESOURCE_ENERGY || resource.amount < carryCap) {
         return false
       }
 
       if (resource.reserved && resource.reserved >= resource.amount) {
         return false;
       }
-      return true
+
       // Is resource on top of container?
       const structures = resource.pos.lookFor(LOOK_STRUCTURES)
       for (const structure of structures) {
